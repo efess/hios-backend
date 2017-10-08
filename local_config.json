@@ -1,0 +1,19 @@
+{
+	"store": {
+		"type": "mysql",
+		"params": {
+			"host": "localhost",
+			"user": "root",
+			"password": "",
+			"database": "hios"
+		}
+	},
+	"mqtt":{
+		"host": "mqtt.home.lan",
+		"port": 1880
+	},
+	"weatherUnderground": {
+		"apiKey": "7bfb6a84b75a01d8"
+	},
+    "sessionSecret": "somebullshit..righthere"
+}

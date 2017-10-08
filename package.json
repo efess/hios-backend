@@ -1,0 +1,28 @@
+{
+  "name": "hios-backend",
+  "version": "1.0.0",
+  "description": "Backend and API for HioS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/main.js",
+    "dev": "nodemon ./src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base64-js": "^1.2.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.1",
+    "extend": "^3.0.1",
+    "mqtt": "^2.13.0",
+    "mysql": "^2.14.1",
+    "node-uuid": "^1.4.8",
+    "path": "^0.12.7",
+    "ramda": "^0.24.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}

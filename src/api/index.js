@@ -10,7 +10,7 @@ function startServer(config){
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     
-    var port = process.env.PORT || config.listenPort || 8080;
+    var port = process.env.PORT || config.listenPort || 3000;
     app.use(express.static(config.publicDir));
     app.use(require('./middleware/configMiddleware')(config));
     app.use(require('./routes'));

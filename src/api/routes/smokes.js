@@ -77,7 +77,7 @@ function getDeviceConfig(deviceId) {
     });        
 }
 
-function handleProbeUpdate(deviceId,config){
+function handleProbeUpdate(deviceId, config){
     return getDeviceConfig(deviceId)
         .then(sendDeviceUpdate(config.mqtt));
 }
@@ -154,7 +154,7 @@ router.post('/newSession', function(req, res) {
     
     smokes.createSession(tokens)
         .then(function _success(){
-            handleProbeUpdate(deviceId);
+            handleProbeUpdate(deviceId, req.config);
             res.send({status:"SUCCESS"});
         }, function _fail(err) {
             res.send('Error: ' + err);

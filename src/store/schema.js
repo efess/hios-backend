@@ -53,6 +53,46 @@ function getUpgradeSqls(currentVersion){
             'firstSeen DATETIME,' +
             'lastConnect DATETIME' +
             ');');
+
+        upgradeSqls.push(`DROP PROCEDURE IF EXISTS temps;
+        
+        DELIMITER //
+        
+        CREATE PROCEDURE temps (
+            IN _deviceId VARCHAR(50),
+            IN _fromTimestamp INTEGER,
+            IN _toTimestamp INTEGER,
+            IN _gran INTEGER,
+            IN _limit INTEGER)
+        BEGIN
+        
+            DECLARE SQLs VARCHAR(10000);
+        
+            IF _limit <= 0 OR _limit > 1000 THEN 
+                SET _limit = 1000;
+            END IF;
+        
+            SET @SQLs = CONCAT(
+                'SELECT timestamp - MOD( timestamp ,', _gran,' ) as timestamp,
+                        avg(probe0) as probe0,
+                        avg(probe1) as probe1,
+                        avg(probe2) as probe2,
+                        avg(probe3) as probe3,
+                        avg(probe0Target) as probe0Target
+                FROM smokes_events
+                WHERE deviceId = ''', _deviceId, '''
+                    AND timestamp >= ', _fromTimestamp, ' 
+                    AND timestamp < ', _toTimestamp, '
+                GROUP BY FROM_UNIXTIME(timestamp - MOD( timestamp ,', _gran,' ) )
+                ORDER BY timestamp
+                LIMIT ', _limit, ';'
+            );
+            
+            PREPARE query FROM @SQLs;
+            EXECUTE query;
+        
+        END //
+        DELIMITER ;`)
             
         upgradeSqls.push('CREATE TABLE IF NOT EXISTS smokes (' +
             'tableId INTEGER AUTO_INCREMENT PRIMARY KEY,' + 

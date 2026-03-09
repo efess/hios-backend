@@ -1,16 +1,13 @@
-var express = require('express'),
-    model = require('../../model/weather');
-    router = express.Router(),
-    uuid = require('node-uuid'),
-    mqtt = require('mqtt'),
-    base64 = require('base64-js');
+import { Router, Request, Response } from 'express';
+import model from '../../model/weather';
 
+const router = Router();
 
-function getAllWeatherData() {
+function getAllWeatherData(): Promise<any> {
     return model.getLocations()
-        .then((locs) => {
-            var locId;
-            if(locs.tableId) {
+        .then((locs: any) => {
+            let locId: any;
+            if (locs && locs.tableId) {
                 locId = locs.tableId;
             } else {
                 locId = locs[0].tableId;
@@ -21,8 +18,7 @@ function getAllWeatherData() {
                 model.getForecast(locId),
                 model.getHourly(locId),
                 model.getAstronomy(locId)
-            ])
-            .then((dataz) => {
+            ]).then((dataz: any[]) => {
                 return {
                     current: JSON.parse(dataz[0].json),
                     forecast: JSON.parse(dataz[1].json),
@@ -33,15 +29,14 @@ function getAllWeatherData() {
         });
 }
 
-router.get('/', function(req, res) {
-    res.render('weather', { title: 'Home HIoS - Weather'});
+router.get('/', function (req: Request, res: Response) {
+    res.render('weather', { title: 'Home HIoS - Weather' });
 });
 
-router.post('/simpleForecast', function(req, res) {
+router.post('/simpleForecast', function (req: Request, res: Response) {
     getAllWeatherData()
-        .then((locData) => {
-            
-            var rspObj = {
+        .then((locData: any) => {
+            const rspObj = {
                 current: {
                     temp: locData.current.temp_c,
                     feelsLike: locData.current.feelslike_c,
@@ -50,7 +45,7 @@ router.post('/simpleForecast', function(req, res) {
                     wind_speed: locData.current.wind_kph,
                     wind_dir: locData.current.wind_dir
                 },
-                forecast: locData.forecast.simpleforecast.forecastday.map((forecast) => {
+                forecast: locData.forecast.simpleforecast.forecastday.map((forecast: any) => {
                     return {
                         date: forecast.date.epoch,
                         icon: forecast.icon,
@@ -59,15 +54,14 @@ router.post('/simpleForecast', function(req, res) {
                     };
                 })
             };
-            
             res.send(rspObj);
         });
 });
-router.post('/forecast', function(req, res) {
+
+router.post('/forecast', function (req: Request, res: Response) {
     getAllWeatherData()
-        .then((locData) => {
-            
-            var rspObj = {
+        .then((locData: any) => {
+            const rspObj = {
                 current: {
                     temp: locData.current.temp_c,
                     feelsLike: locData.current.feelslike_c,
@@ -75,9 +69,9 @@ router.post('/forecast', function(req, res) {
                     timestamp: locData.current.observation_epoch,
                     wind_speed: locData.current.wind_kph,
                     wind_dir: locData.current.wind_dir,
-                        humidity: locData.current.relative_humidity
+                    humidity: locData.current.relative_humidity
                 },
-                forecast: locData.forecast.simpleforecast.forecastday.map((forecast) => {
+                forecast: locData.forecast.simpleforecast.forecastday.map((forecast: any) => {
                     return {
                         date: forecast.date.epoch,
                         icon: forecast.icon,
@@ -88,7 +82,7 @@ router.post('/forecast', function(req, res) {
                         humidity: forecast.avehumidity
                     };
                 }),
-                hourly: locData.hourly.map((hourly) => {
+                hourly: locData.hourly.map((hourly: any) => {
                     return {
                         date: hourly.FCTTIME.epoch,
                         icon: hourly.icon,
@@ -101,23 +95,22 @@ router.post('/forecast', function(req, res) {
                 astronomy: {
                     sunrise: {
                         hour: locData.astronomy.sun_phase.sunrise.hour,
-                        minute: locData.astronomy.sun_phase.sunrise.minute,
+                        minute: locData.astronomy.sun_phase.sunrise.minute
                     },
                     sunset: {
                         hour: locData.astronomy.sun_phase.sunset.hour,
-                        minute: locData.astronomy.sun_phase.sunset.minute,
+                        minute: locData.astronomy.sun_phase.sunset.minute
                     },
                     moon: {
                         percent: locData.astronomy.moon_phase.percentIlluminated,
-                        phase: locData.astronomy.moon_phase.phaseofMoon,
+                        phase: locData.astronomy.moon_phase.phaseofMoon
                     }
                 }
             };
-            
             res.send(rspObj);
-        }, (err) => {
+        }, (err: any) => {
             res.send('ERROR ' + err);
-        })
+        });
 });
 
-module.exports = router;
+export default router;

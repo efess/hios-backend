@@ -2,27 +2,33 @@
   "name": "hios-backend",
   "version": "1.0.0",
   "description": "Backend and API for HioS",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "node ./src/main.js",
-    "dev": "nodemon ./src/main.js",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node src/main.ts",
+    "watch": "nodemon --exec ts-node src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "base64-js": "^1.2.1",
-    "body-parser": "^1.18.2",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.16.1",
-    "extend": "^3.0.1",
-    "mqtt": "^2.13.0",
-    "mysql": "^2.14.1",
-    "node-uuid": "^1.4.8",
-    "path": "^0.12.7",
-    "ramda": "^0.24.1"
+    "base64-js": "^1.5.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "mqtt": "^5.10.1",
+    "mysql2": "^3.12.0",
+    "ramda": "^0.30.1",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "@types/base64-js": "^1.3.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.5",
+    "@types/ramda": "^0.30.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   }
 }

@@ -6,6 +6,7 @@ import weather from './weather';
 
 const router = Router();
 
+
 router.use('/undercabinet', undercabinet);
 router.use('/smokes', smokes);
 router.use('/environment', environment);

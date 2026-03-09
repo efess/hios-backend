@@ -66,7 +66,7 @@ Config loaded from `local_config.json` at project root, overridden by environmen
 |---------|-------------|-------------|
 | `STORE_HOST` | `store.params.host` | MySQL host |
 | `STORE_USER` | `store.params.user` | MySQL user |
-| `STORE_DB` | `store.params.database` | MySQL database name |
+| `STORE_DB` | `store.params.databas` | MySQL database name |
 | `STORE_PASS` | `store.params.password` | MySQL password |
 | `MQTT_HOST` | `mqtt.host` | MQTT broker host |
 | `MQTT_PORT` | `mqtt.port` | MQTT broker port |
